@@ -21,22 +21,22 @@ with open('hostapd.conf', 'w') as file:
 # Append configurations to dnsmasq.conf
 dnsmasq_conf_content = """\
 interface=wlan1
-dhcp-range=192.168.100.226,192.168.100.230,255.255.255.0,12h
-dhcp-option=3,192.168.100.1
-dhcp-option=6,192.168.100.1
+dhcp-range=192.168.2.2,192.168.2.230,255.255.255.0,12h
+dhcp-option=3,192.168.2.1
+dhcp-option=6,192.168.2.1
 server=8.8.8.8
-server=1.1.1.1
+server=8.8.4.4
 log-queries
 log-dhcp
 listen-address=127.0.0.1
-listen-address=192.168.100.1
+listen-address=192.168.2.1
 """
-with open('/etc/dnsmasq.conf', 'w') as file:
+with open('/etc/dnsmasq.conf', 'a') as file:
     file.write(dnsmasq_conf_content)
 
 # Configure wlan1 interface and routing
-subprocess.run(['ifconfig', 'wlan1', 'up', '192.168.100.225', 'netmask', '255.255.255.0'])
-#subprocess.run(['route', 'add', '-net', '192.168.2.0', 'netmask', '255.255.255.0', 'gw', '192.168.2.1'])
+subprocess.run(['ifconfig', 'wlan1', 'up', '192.168.2.1', 'netmask', '255.255.255.0'])
+subprocess.run(['route', 'add', '-net', '192.168.2.0', 'netmask', '255.255.255.0', 'gw', '192.168.2.1'])
 
 # Start dnsmasq service
 subprocess.run(['service', 'dnsmasq', 'start'])
