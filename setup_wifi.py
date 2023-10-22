@@ -25,11 +25,11 @@ dhcp-range=192.168.100.226,192.168.100.230,255.255.255.0,12h
 dhcp-option=3,192.168.100.1
 dhcp-option=6,192.168.100.1
 server=8.8.8.8
-server=8.8.4.4
+server=1.1.1.1
 log-queries
 log-dhcp
 listen-address=127.0.0.1
-listen-address=192.168.2.1
+listen-address=192.168.100.1
 """
 with open('/etc/dnsmasq.conf', 'w') as file:
     file.write(dnsmasq_conf_content)
