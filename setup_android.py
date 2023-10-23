@@ -31,20 +31,20 @@ log-dhcp
 listen-address=127.0.0.1
 listen-address=192.168.43.1
 """
-with open('/etc/dnsmasq.conf', 'a') as file:
+with open('/etc/dnsmasq.conf', 'w') as file:
     file.write(dnsmasq_conf_content)
 
 # Configure wlan1 interface and routing
 subprocess.run(['ifconfig', 'wlan1', 'up', '192.168.43.1', 'netmask', '255.255.255.0'])
-#subprocess.run(['route', 'add', '-net', '192.168.43.0', 'netmask', '255.255.255.0', 'gw', '192.168.43.1'])
+subprocess.run(['route', 'add', '-net', '192.168.43.0', 'netmask', '255.255.255.0', 'gw', '192.168.43.1'])
 
 # Start dnsmasq service
 subprocess.run(['service', 'dnsmasq', 'start'])
 subprocess.run(['service', 'dnsmasq', 'restart'])
 
 # Configure iptables rules
-#subprocess.run(['iptables', '--table', 'nat', '--append', 'POSTROUTING', '--out-interface', 'wlan0', '-j', 'MASQUERADE'])
-#subprocess.run(['iptables', '--append', 'FORWARD', '--in-interface', 'wlan1', '-j', 'ACCEPT'])
+subprocess.run(['iptables', '--table', 'nat', '--append', 'POSTROUTING', '--out-interface', 'wlan0', '-j', 'MASQUERADE'])
+subprocess.run(['iptables', '--append', 'FORWARD', '--in-interface', 'wlan1', '-j', 'ACCEPT'])
 
 # Edit /proc/sys/net/ipv4/ip_forward file
 ip_forward_content = """\
