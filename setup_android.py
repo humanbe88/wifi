@@ -7,7 +7,7 @@ subprocess.run(['apt-get', 'install', '-y', 'dnsmasq', 'hostapd'])
 # Create hostapd.conf file
 hostapd_conf_content = """\
 interface=wlan1
-driver=nl80211
+#driver=nl80211
 ssid=PAV2_5G
 #ssid=Unitest
 hw_mode=b
