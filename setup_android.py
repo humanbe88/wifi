@@ -12,8 +12,8 @@ interface=wlan1
 ssid=Unitest
 hw_mode=b
 channel=7
-bssid=28:87:BA:14:25:43
-#bssid=22:87:BA:14:25:43
+#bssid=28:87:BA:14:25:43
+bssid=22:87:BA:14:25:43
 """
 with open('hostapd.conf', 'w') as file:
     file.write(hostapd_conf_content)
