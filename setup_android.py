@@ -43,11 +43,11 @@ subprocess.run(['service', 'dnsmasq', 'start'])
 subprocess.run(['service', 'dnsmasq', 'restart'])
 
 # Configure iptables rules
-#subprocess.run(['iptables', '-F'])
-#subprocess.run(['iptables', '-X'])
-#subprocess.run(['iptables', '-F', '-t', 'nat'])
-#subprocess.run(['iptables', '--table', 'nat', '--append', 'POSTROUTING', '--out-interface', 'wlan0', '-j', 'MASQUERADE'])
-#subprocess.run(['iptables', '--append', 'FORWARD', '--in-interface', 'wlan1', '--out-interface', 'wlan0', '-j', 'ACCEPT'])
+subprocess.run(['iptables', '-F'])
+subprocess.run(['iptables', '-X'])
+subprocess.run(['iptables', '-F', '-t', 'nat'])
+subprocess.run(['iptables', '--table', 'nat', '--append', 'POSTROUTING', '--out-interface', 'rmnet_data1', '-j', 'MASQUERADE'])
+subprocess.run(['iptables', '--append', 'FORWARD', '--in-interface', 'wlan0', '--out-interface', 'rmnet_data1', '-j', 'ACCEPT'])
 
 # Edit /proc/sys/net/ipv4/ip_forward file
 ip_forward_content = """\
