@@ -6,7 +6,7 @@ subprocess.run(['apt-get', 'install', '-y', 'dnsmasq', 'hostapd'])
 
 # Create hostapd.conf file
 hostapd_conf_content = """\
-interface=wlan0
+interface=wlan1
 #driver=nl80211
 #ssid=PAV2_5G
 ssid=Unitest
@@ -20,7 +20,7 @@ with open('hostapd.conf', 'w') as file:
 
 # Append configurations to dnsmasq.conf
 dnsmasq_conf_content = """\
-interface=wlan0
+interface=wlan1
 dhcp-range=192.168.43.100,192.168.43.230,255.255.255.0,12h
 dhcp-option=3,192.168.43.1
 dhcp-option=6,192.168.43.1
@@ -35,7 +35,7 @@ with open('/etc/dnsmasq.conf', 'w') as file:
     file.write(dnsmasq_conf_content)
 
 # Configure wlan1 interface and routing
-subprocess.run(['ifconfig', 'wlan0', 'up', '192.168.43.1', 'netmask', '255.255.255.0'])
+subprocess.run(['ifconfig', 'wlan1', 'up', '192.168.43.1', 'netmask', '255.255.255.0'])
 subprocess.run(['route', 'add', '-net', '192.168.43.0', 'netmask', '255.255.255.0', 'gw', '192.168.43.1'])
 
 # Start dnsmasq service
@@ -43,11 +43,8 @@ subprocess.run(['service', 'dnsmasq', 'start'])
 subprocess.run(['service', 'dnsmasq', 'restart'])
 
 # Configure iptables rules
-subprocess.run(['iptables', '-F'])
-subprocess.run(['iptables', '-X'])
-subprocess.run(['iptables', '-F', '-t', 'nat'])
-subprocess.run(['iptables', '--table', 'nat', '--append', 'POSTROUTING', '--out-interface', 'rmnet_data1', '-j', 'MASQUERADE'])
-subprocess.run(['iptables', '--append', 'FORWARD', '--in-interface', 'wlan0', '--out-interface', 'rmnet_data1', '-j', 'ACCEPT'])
+subprocess.run(['iptables', '--table', 'nat', '--append', 'POSTROUTING', '--out-interface', 'wlan0', '-j', 'MASQUERADE'])
+subprocess.run(['iptables', '--append', 'FORWARD', '--in-interface', 'wlan1', '--out-interface', 'wlan0', '-j', 'ACCEPT'])
 
 # Edit /proc/sys/net/ipv4/ip_forward file
 ip_forward_content = """\
