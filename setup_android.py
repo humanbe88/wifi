@@ -35,8 +35,8 @@ with open('/etc/dnsmasq.conf', 'w') as file:
     file.write(dnsmasq_conf_content)
 
 # Configure wlan1 interface and routing
-subprocess.run(['ifconfig', 'wlan1', 'up', '192.168.2.1', 'netmask', '255.255.255.0'])
-subprocess.run(['route', 'add', '-net', '192.168.2.0', 'netmask', '255.255.255.0', 'gw', '192.168.2.1'])
+subprocess.run(['ifconfig', 'wlan1', 'up', '192.168.43.1', 'netmask', '255.255.255.0'])
+subprocess.run(['route', 'add', '-net', '192.168.43.0', 'netmask', '255.255.255.0', 'gw', '192.168.43.1'])
 
 # Start dnsmasq service
 subprocess.run(['service', 'dnsmasq', 'start'])
