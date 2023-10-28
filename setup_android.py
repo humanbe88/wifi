@@ -5,6 +5,10 @@ subprocess.run(['apt-get', 'update'])
 subprocess.run(['apt-get', 'install', '-y', 'dnsmasq', 'hostapd'])
 
 # Downgrade iptables
+# Directory to store downloaded Debian packages
+download_dir = '/wifi'
+
+# Download the required Debian packages using wget
 packages = [
     "http://old.kali.org/kali/pool/main/i/iptables/iptables_1.6.2-1.1_arm64.deb",
     "http://old.kali.org/kali/pool/main/i/iptables/libip4tc0_1.6.2-1.1_arm64.deb",
@@ -13,11 +17,15 @@ packages = [
     "http://old.kali.org/kali/pool/main/i/iptables/libxtables12_1.6.2-1.1_arm64.deb"
 ]
 
+# Create the download directory if it doesn't exist
+os.makedirs(download_dir, exist_ok=True)
+
+# Download the packages to the specified directory
 for package in packages:
-    subprocess.run(['wget', package], check=True)
+    subprocess.run(['wget', package, '-P', download_dir], check=True)
 
 # Install the downloaded packages using dpkg
-subprocess.run(['dpkg', '-i', '*.deb'], check=True)
+subprocess.run(['dpkg', '-i', f'{download_dir}/*.deb'], check=True)
 
 # Mark packages on hold to prevent automatic upgrades
 packages_to_hold = ['iptables', 'libip4tc0', 'libip6tc0', 'libiptc0', 'libxtables12']
