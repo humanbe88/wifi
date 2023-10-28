@@ -1,4 +1,5 @@
 import subprocess
+import os
 
 # Update and install necessary packages
 subprocess.run(['apt-get', 'update'])
@@ -16,6 +17,9 @@ packages = [
     "http://old.kali.org/kali/pool/main/i/iptables/libiptc0_1.6.2-1.1_arm64.deb",
     "http://old.kali.org/kali/pool/main/i/iptables/libxtables12_1.6.2-1.1_arm64.deb"
 ]
+
+# Create the download directory if it doesn't exist
+os.makedirs(download_dir, exist_ok=True)
 
 # Download the packages to the specified directory
 for package in packages:
