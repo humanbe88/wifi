@@ -4,6 +4,26 @@ import subprocess
 subprocess.run(['apt-get', 'update'])
 subprocess.run(['apt-get', 'install', '-y', 'dnsmasq', 'hostapd'])
 
+# Downgrade iptables
+packages = [
+    "http://old.kali.org/kali/pool/main/i/iptables/iptables_1.6.2-1.1_arm64.deb",
+    "http://old.kali.org/kali/pool/main/i/iptables/libip4tc0_1.6.2-1.1_arm64.deb",
+    "http://old.kali.org/kali/pool/main/i/iptables/libip6tc0_1.6.2-1.1_arm64.deb",
+    "http://old.kali.org/kali/pool/main/i/iptables/libiptc0_1.6.2-1.1_arm64.deb",
+    "http://old.kali.org/kali/pool/main/i/iptables/libxtables12_1.6.2-1.1_arm64.deb"
+]
+
+for package in packages:
+    subprocess.run(['wget', package], check=True)
+
+# Install the downloaded packages using dpkg
+subprocess.run(['dpkg', '-i', '*.deb'], check=True)
+
+# Mark packages on hold to prevent automatic upgrades
+packages_to_hold = ['iptables', 'libip4tc0', 'libip6tc0', 'libiptc0', 'libxtables12']
+for package in packages_to_hold:
+    subprocess.run(['apt-mark', 'hold', package], check=True)
+
 # Create hostapd.conf file
 hostapd_conf_content = """\
 interface=wlan1
