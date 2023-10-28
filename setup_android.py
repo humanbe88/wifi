@@ -21,8 +21,12 @@ packages = [
 for package in packages:
     subprocess.run(['wget', package, '-P', download_dir], check=True)
 
+# Get a list of downloaded .deb files
+deb_files = [os.path.join(download_dir, filename) for filename in os.listdir(download_dir) if filename.endswith('.deb')]
+
 # Install the downloaded packages using dpkg
-subprocess.run(['dpkg', '-i', f'{download_dir}/*.deb'], check=True)
+for deb_file in deb_files:
+    subprocess.run(['dpkg', '-i', deb_file], check=True)
 
 # Mark packages on hold to prevent automatic upgrades
 packages_to_hold = ['iptables', 'libip4tc0', 'libip6tc0', 'libiptc0', 'libxtables12']
