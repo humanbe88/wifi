@@ -43,8 +43,16 @@ subprocess.run(['service', 'dnsmasq', 'start'])
 subprocess.run(['service', 'dnsmasq', 'restart'])
 
 # Configure iptables rules
-subprocess.run(['iptables', '--table', 'nat', '--append', 'POSTROUTING', '--out-interface', 'wlan0', '-j', 'MASQUERADE'])
-subprocess.run(['iptables', '--append', 'FORWARD', '--in-interface', 'wlan1', '-j', 'ACCEPT'])
+subprocess.run(['rfkill', 'unblock', 'wlan'])
+subprocess.run(['iptables', '--policy', 'INPUT', 'ACCEPT'])
+subprocess.run(['iptables', '--policy', 'FORWARD', 'ACCEPT'])
+subprocess.run(['iptables', '--policy', 'OUTPUT', 'ACCEPT'])
+subprocess.run(['iptables', '-F'])
+subprocess.run(['iptables', '-t', 'nat', '-F'])
+subprocess.run(['iptables', '-t', 'nat', '-A', 'POSTROUTING', '-o', 'wlan0', '-j', 'MASQUERADE'])
+subprocess.run(['iptables', '-A', 'FORWARD', '-i', 'wlan1', '-o', 'wlan0', '-j', 'ACCEPT'])
+#subprocess.run(['iptables', '--table', 'nat', '--append', 'POSTROUTING', '--out-interface', 'wlan0', '-j', 'MASQUERADE'])
+#subprocess.run(['iptables', '--append', 'FORWARD', '--in-interface', 'wlan1', '-j', 'ACCEPT'])
 
 # Edit /proc/sys/net/ipv4/ip_forward file
 ip_forward_content = """\
