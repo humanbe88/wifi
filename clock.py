@@ -76,7 +76,7 @@ def read_access_token():
         return None
 
 email = "shubki@fple.com"      #user/pass 
-password = ""
+password = "Humanbeing@1"
 access_type = "mobile"
 
 print("Lai2 Pilih:")
