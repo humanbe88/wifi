@@ -8,13 +8,11 @@ subprocess.run(['apt-get', 'install', '-y', 'dnsmasq', 'hostapd'])
 hostapd_conf_content = """\
 interface=wlan1
 driver=nl80211
-#ssid=PAV2_5G
-ssid=FPLE(M)_HQ
+ssid=ClonedOne
 
 hw_mode=b
 channel=7
-#bssid=28:87:BA:14:25:43
-bssid=D8:EC:5E:6F:02:6F
+bssid=D8:EC:5E:6F:02:2F
 
 """
 with open('hostapd.conf', 'w') as file:
